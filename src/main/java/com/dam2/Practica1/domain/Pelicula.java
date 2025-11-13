@@ -3,6 +3,7 @@ package com.dam2.Practica1.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "peliculas")
@@ -24,4 +25,17 @@ public class Pelicula {
     private LocalDate fechaEstreno;
 
     private String sinopsis;
+
+    private int valoracion;
+
+    @OneToOne
+    @JoinColumn(name = "ficha_id") // FK en la tabla Pelicula
+    private FichaTecnica fichaTecnica;
+
+    @ManyToOne
+    @JoinColumn(name = "director_id", nullable = false) // FK en PELICULA
+    private Director director;
+
+    @ManyToMany(mappedBy = "peliculas")
+    private List<Actor> actors;
 }
