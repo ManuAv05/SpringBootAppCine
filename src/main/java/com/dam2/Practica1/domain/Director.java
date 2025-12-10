@@ -2,17 +2,17 @@ package com.dam2.Practica1.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDate;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "director")
-@Data  // ✅ Lombok genera getters, setters, toString, equals, hashCode
-@AllArgsConstructor      // ✅ genera constructor con todos los campos
+@Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Director {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,9 +20,8 @@ public class Director {
     @Column(nullable = false, unique = true)
     private String nombre;
 
-    // Relación 1:N con Pelicula
     @OneToMany(mappedBy = "director")
-    private List<Pelicula> peliculas;
-
-
+    @ToString.Exclude
+    @Builder.Default
+    private List<Pelicula> peliculas = new ArrayList<>();
 }

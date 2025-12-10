@@ -2,17 +2,17 @@ package com.dam2.Practica1.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDate;
-
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "actor")
-@Data  // ✅ Lombok genera getters, setters, toString, equals, hashCode
-@AllArgsConstructor      // ✅ genera constructor con todos los campos
+@Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Actor {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,9 +21,16 @@ public class Actor {
 
     @ManyToMany
     @JoinTable(
-            name="actor_pelicula",
-            joinColumns = @JoinColumn(name="actor_id"),
-            inverseJoinColumns = @JoinColumn(name="pelicula_id"))
-    private List<Pelicula> peliculas;
+            name = "actor_pelicula",
+            joinColumns = @JoinColumn(name = "actor_id"),
+            inverseJoinColumns = @JoinColumn(name = "pelicula_id"))
+    @ToString.Exclude
+    @Builder.Default
+    private List<Pelicula> peliculas = new ArrayList<>();
 
+    public void addPelicula(Pelicula p) {
+        if(peliculas == null) peliculas = new ArrayList<>();
+        peliculas.add(p);
+        p.getActors().add(this);
+    }
 }

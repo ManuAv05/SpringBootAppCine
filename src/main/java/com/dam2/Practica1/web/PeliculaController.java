@@ -1,92 +1,76 @@
 package com.dam2.Practica1.web;
-
-
-import com.dam2.Practica1.domain.Pelicula;
+import jakarta.validation.Valid;
+import com.dam2.Practica1.dto.PeliculaCreateUpdateDto;
+import com.dam2.Practica1.dto.PeliculaDto;
 import com.dam2.Practica1.service.PeliculaService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.concurrent.CompletableFuture;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/peliculas")
+@CrossOrigin(origins = "http://localhost:5173")
 @RequiredArgsConstructor
 public class PeliculaController {
-    private final PeliculaService service;
+
+    private final PeliculaService peliculaService;
 
     @GetMapping
-    public List<Pelicula> listar() {
-        return service.listar();
+    public ResponseEntity<List<PeliculaDto>> listarTodas() {
+        return ResponseEntity.ok(peliculaService.listarTodasDto());
     }
 
     @GetMapping("/{id}")
-    public Pelicula buscarPorId(@PathVariable Long id) {
-        return service.buscarPorId(id);
+    public ResponseEntity<PeliculaDto> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(peliculaService.buscarPorIdDto(id));
     }
 
-    @GetMapping("/peliculas_mejores")
-    public List<Pelicula> mejores_peliculas() {
-        return service.mejores_peliculas(5);
-    }
-/*
-    @GetMapping("/mejores_peliculas")
-    public List<Pelicula> mejores_peliculas() {
-        return service.mejores_peliculas();
-    }
-*/
     @PostMapping
-    public void agregar(@RequestBody Pelicula pelicula) {
-        service.agregar(pelicula);
+    public ResponseEntity<PeliculaDto> crear(@Valid @RequestBody PeliculaCreateUpdateDto dto) {
+        // Fíjate que he puesto @Valid antes de @RequestBody
+        return new ResponseEntity<>(peliculaService.crearPelicula(dto), HttpStatus.CREATED);
     }
 
-    @GetMapping("/procesar")
-    public String procesarPeliculas() {
-        long inicio = System.currentTimeMillis();
-        service.tareaLenta("Interstellar");
-        service.tareaLenta("The Dark Knight");
-        service.tareaLenta("Soul");
-        long fin = System.currentTimeMillis();
-        return "Tiempo total: " + (fin - inicio) + " ms";
+    @PutMapping("/{id}")
+    public ResponseEntity<PeliculaDto> actualizar(@PathVariable Long id, @Valid @RequestBody PeliculaCreateUpdateDto dto) {
+        // Aquí también el @Valid
+        return ResponseEntity.ok(peliculaService.actualizarPelicula(id, dto));
     }
 
-    @GetMapping("/procesarAsync")
-    public String procesarAsync() {
-        long inicio = System.currentTimeMillis();
-
-        var t1 = service.tareaLenta2("🍿 Interstellar");
-        var t2 = service.tareaLenta2("🦇 The Dark Knight");
-        var t3 = service.tareaLenta2("🎵 Soul");
-        var t4 = service.tareaLenta2("🎵 Soul");
-        var t5 = service.tareaLenta2("🎵 Soul");
-        var t6 = service.tareaLenta2("🎵 Soul");
-        //var t7 = service.tareaLenta2("🎵 Soul");
-
-        // Espera a que terminen todas las tareas
-        CompletableFuture.allOf(t1, t2, t3,t4,t5,t6).join();
-
-        long fin = System.currentTimeMillis();
-        return "Tiempo total (asíncrono): " + (fin - inicio) + " ms";
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        peliculaService.eliminarPelicula(id);
+        return ResponseEntity.noContent().build();
     }
 
-    // A4 - Ejercicio 2
-    @GetMapping("/reproducir")
-    public String reproducirAsync() {
-        long inicio = System.currentTimeMillis();
-
-        var t1 = service.reproducir("🍿 Interstellar");
-        var t2 = service.reproducir("🦇 The Dark Knight");
-        var t3 = service.reproducir("🎵 Soul");
-
-        // Espera a que terminen todas las tareas
-        CompletableFuture.allOf(t1, t2, t3).join();
-
-        long fin = System.currentTimeMillis();
-        return "Tiempo total (asíncrono): " + (fin - inicio) + " ms";
+    @GetMapping("/mejores/{puntuacion}")
+    public ResponseEntity<List<PeliculaDto>> mejoresPeliculas(@PathVariable int puntuacion) {
+        return ResponseEntity.ok(peliculaService.mejores_peliculas(puntuacion));
     }
 
-    // A4 - Ejercicio 3
-    
+    @PostMapping("/importar")
+    public ResponseEntity<String> importarDatos() {
+        try {
+            peliculaService.importarCarpeta("datos");
+            return ResponseEntity.ok("Importación iniciada en segundo plano...");
+        } catch (IOException | URISyntaxException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al importar: " + e.getMessage());
+        }
+    }
+    @PostMapping("/votar/{juradoId}")
+    public ResponseEntity<String> votar(@PathVariable String juradoId) {
+        peliculaService.votarJurado(juradoId);
+        return ResponseEntity.ok("Voto registrado asíncronamente para el jurado: " + juradoId);
+    }
 
-
+    @GetMapping("/ranking")
+    public ResponseEntity<Map<String, Integer>> verRanking() {
+        return ResponseEntity.ok(peliculaService.getRanking());
+    }
 }
