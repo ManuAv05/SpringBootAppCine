@@ -23,80 +23,151 @@ public class DataLoader {
                                UsuarioRepository usuarioRepo) {
 
         return args -> {
+            System.out.println(">>> CHECKING/LOADING DATA...");
 
-            if (peliculaRepo.count() > 0) {
-                System.out.println(">>> DATOS DE PRUEBA YA CARGADOS. Omitiendo carga inicial.");
-                return;
+            // 1. Categories
+            Categoria sciFi = createCategoriaIfNotFound(categoriaRepo, "Ciencia Ficción", "http://scifi.com");
+            Categoria drama = createCategoriaIfNotFound(categoriaRepo, "Drama", "http://drama.com");
+            Categoria animacion = createCategoriaIfNotFound(categoriaRepo, "Animación", "http://pixar.com");
+            Categoria terror = createCategoriaIfNotFound(categoriaRepo, "Terror", "http://terror.com");
+            Categoria thriller = createCategoriaIfNotFound(categoriaRepo, "Thriller", "http://thriller.com");
+
+            // 2. Languages
+            Idioma ingles = createIdiomaIfNotFound(idiomaRepo, "Inglés");
+            Idioma espanol = createIdiomaIfNotFound(idiomaRepo, "Español");
+
+            // 3. Movies
+            // Soul
+            Director docter = createDirectorIfNotFound(directorRepo, "Pete Docter");
+            createPeliculaIfNotFound(peliculaRepo, "Soul", 100, LocalDate.of(2020, 12, 25),
+                    "Un músico busca su propósito tras un accidente.", 8,
+                    "Pete Docter", "EE.UU.", docter,
+                    "https://lumiere-a.akamaihd.net/v1/images/p_soul_disneyplus_v2_20907_764da65d.jpeg",
+                    List.of(animacion, drama), List.of(ingles, espanol));
+
+            // Interstellar
+            Director nolan = createDirectorIfNotFound(directorRepo, "Christopher Nolan");
+            createPeliculaIfNotFound(peliculaRepo, "Interstellar", 169, LocalDate.of(2014, 11, 7),
+                    "Un equipo de exploradores viaja a través de un agujero de gusano en el espacio en un intento de asegurar la supervivencia de la humanidad.", 9,
+                    "Christopher Nolan", "EE.UU.", nolan,
+                    "https://imusic.b-cdn.net/images/item/original/935/5051892182935.jpg?interstellar-2015-interstellar-dvd&class=scaled&v=1691753575",
+                    List.of(sciFi, drama), List.of(ingles));
+
+            // The Shining (El Resplandor)
+            Director kubrick = createDirectorIfNotFound(directorRepo, "Stanley Kubrick");
+            createPeliculaIfNotFound(peliculaRepo, "The Shining", 146, LocalDate.of(1980, 5, 23),
+                    "Una familia se dirige a un hotel aislado para pasar el invierno. Allí, una presencia espiritual maligna influye en el padre hacia la violencia.", 9,
+                    "Stanley Kubrick", "EE.UU.", kubrick,
+                    "https://m.media-amazon.com/images/M/MV5BYmUxZDU3NjktMzA1OS00OGUwLWJkOTctYzhjOGI5MTcyY2U3XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
+                    List.of(terror, thriller), List.of(ingles, espanol));
+
+            // Se7en
+            Director fincher = createDirectorIfNotFound(directorRepo, "David Fincher");
+            createPeliculaIfNotFound(peliculaRepo, "Se7en", 127, LocalDate.of(1995, 9, 22),
+                    "Dos detectives siguen la pista de un asesino en serie cuyos crímenes se basan en los siete pecados capitales.", 9,
+                    "David Fincher", "EE.UU.", fincher,
+                    "https://i.pinimg.com/736x/8a/53/32/8a53323e0c5108d210a7d1a6658b4cc9.jpg",
+                    List.of(thriller, drama), List.of(ingles));
+
+            // Get Out (Déjame salir)
+            Director peele = createDirectorIfNotFound(directorRepo, "Jordan Peele");
+            createPeliculaIfNotFound(peliculaRepo, "Get Out", 104, LocalDate.of(2017, 2, 24),
+                    "Un joven afroamericano visita la propiedad de la familia blanca de su novia, donde descubre un oscuro secreto.", 8,
+                    "Jordan Peele", "EE.UU.", peele,
+                    "https://play-lh.googleusercontent.com/_bsdjxiJW46t8sFC5H46LOOgBWye5EfVHEs2lOeM4pAy3grq-SXa1glySgv89-ryagOApg",
+                    List.of(terror, thriller), List.of(ingles));
+
+            // As Above, So Below (Así en la Tierra como en el Infierno)
+            Director dowdle = createDirectorIfNotFound(directorRepo, "John Erick Dowdle");
+            createPeliculaIfNotFound(peliculaRepo, "Así en la Tierra como en el Infierno", 93, LocalDate.of(2014, 8, 29),
+                    "Un equipo de exploradores se ventura en las catacumbas de París, descubriendo el oscuro secreto que yace en la ciudad de los muertos.", 7,
+                    "John Erick Dowdle", "EE.UU.", dowdle,
+                    "https://m.media-amazon.com/images/M/MV5BYTlkMTVkNTQtYjUxOC00NDRkLWEwNmEtYzVmNmUwM2ZiMjJkXkEyXkFqcGc@._V1_.jpg",
+                    List.of(terror, thriller), List.of(ingles, espanol));
+
+            // The Conjuring (Expediente Warren)
+            Director wan = createDirectorIfNotFound(directorRepo, "James Wan");
+            createPeliculaIfNotFound(peliculaRepo, "Expediente Warren: The Conjuring", 112, LocalDate.of(2013, 7, 19),
+                    "Los investigadores paranormales Ed y Lorraine Warren ayudan a una familia aterrorizada por una presencia oscura en su granja.", 8,
+                    "James Wan", "EE.UU.", wan,
+                    "https://pics.filmaffinity.com/the_conjuring_the_warren_files-153245956-large.jpg",
+                    List.of(terror, thriller), List.of(ingles, espanol));
+
+            // Hereditary
+            Director aster = createDirectorIfNotFound(directorRepo, "Ari Aster");
+            createPeliculaIfNotFound(peliculaRepo, "Hereditary", 127, LocalDate.of(2018, 6, 8),
+                    "Tras la muerte de la matriarca, una familia se ve acechada por una presencia oscura y trágica que desentraña secretos aterradores.", 9,
+                    "Ari Aster", "EE.UU.", aster,
+                    "https://es.web.img2.acsta.net/pictures/18/06/06/10/24/2467257.jpg",
+                    List.of(terror, drama), List.of(ingles));
+
+            // Sinister
+            Director derrickson = createDirectorIfNotFound(directorRepo, "Scott Derrickson");
+            createPeliculaIfNotFound(peliculaRepo, "Sinister", 110, LocalDate.of(2012, 10, 12),
+                    "Un escritor de crímenes reales encuentra una caja de películas caseras que sugieren que el asesinato que está investigando es obra de un asesino en serie sobrenatural.", 7,
+                    "Scott Derrickson", "EE.UU.", derrickson,
+                    "https://pics.filmaffinity.com/Sinister-578046633-large.jpg",
+                    List.of(terror, thriller), List.of(ingles));
+
+            // 4. Admin User
+            if (usuarioRepo.findByUsername("admin").isEmpty()) {
+                Usuario admin = Usuario.builder()
+                        .username("admin")
+                        .password("1234")
+                        .email("admin@cine.com")
+                        .rol("ADMIN")
+                        .build();
+                usuarioRepo.save(admin);
             }
 
-            System.out.println(">>> CARGANDO DATOS DE PRUEBA ACTUALIZADOS...");
-
-            Categoria sciFi = Categoria.builder().nombre("Ciencia Ficción").url("http://scifi.com").build();
-            Categoria drama = Categoria.builder().nombre("Drama").url("http://drama.com").build();
-            Categoria animacion = Categoria.builder().nombre("Animación").url("http://pixar.com").build();
-
-            categoriaRepo.saveAll(List.of(sciFi, drama, animacion));
-
-            Idioma ingles = Idioma.builder().nombre("Inglés").build();
-            Idioma espanol = Idioma.builder().nombre("Español").build();
-
-            idiomaRepo.saveAll(List.of(ingles, espanol));
-
-            Director nolan = Director.builder().nombre("Christopher Nolan").peliculas(new ArrayList<>()).build();
-            Director docter = Director.builder().nombre("Pete Docter").peliculas(new ArrayList<>()).build();
-
-            directorRepo.saveAll(List.of(nolan, docter));
-
-            FichaTecnica f1 = FichaTecnica.builder().director("Christopher Nolan").duracion(169).pais("EE.UU.").build();
-            FichaTecnica f2 = FichaTecnica.builder().director("Pete Docter").duracion(100).pais("EE.UU.").build();
-
-
-            Pelicula interstellar = Pelicula.builder()
-                    .titulo("Interstellar")
-                    .duracion(169)
-                    .fechaEstreno(LocalDate.of(2014, 11, 7))
-                    .sinopsis("Viaje a través de un agujero de gusano.")
-                    .valoracion(9)
-                    .fichaTecnica(f1) // Asignamos la ficha (aún sin ID)
-                    .director(nolan)
-                    .categorias(new ArrayList<>(List.of(sciFi, drama)))
-                    .idiomas(new ArrayList<>(List.of(ingles)))
-                    .build();
-
-            Pelicula soul = Pelicula.builder()
-                    .titulo("Soul")
-                    .duracion(100)
-                    .fechaEstreno(LocalDate.of(2020, 12, 25))
-                    .sinopsis("Un músico busca su propósito.")
-                    .valoracion(8)
-                    .fichaTecnica(f2) // Asignamos la ficha (aún sin ID)
-                    .director(docter)
-                    .categorias(new ArrayList<>(List.of(animacion, drama)))
-                    .idiomas(new ArrayList<>(List.of(ingles, espanol)))
-                    .build();
-
-            peliculaRepo.saveAll(List.of(interstellar, soul));
-
-            Actor matthew = Actor.builder().nombre("Matthew McConaughey").peliculas(new ArrayList<>()).build();
-            Actor hathaway = Actor.builder().nombre("Anne Hathaway").peliculas(new ArrayList<>()).build();
-            Actor foxx = Actor.builder().nombre("Jamie Foxx").peliculas(new ArrayList<>()).build();
-
-            matthew.addPelicula(interstellar);
-            hathaway.addPelicula(interstellar);
-            foxx.addPelicula(soul);
-
-            actorRepo.saveAll(List.of(matthew, hathaway, foxx));
-
-            Usuario admin = Usuario.builder()
-                    .username("admin")
-                    .password("1234")
-                    .email("admin@cine.com")
-                    .rol("ADMIN")
-                    .build();
-
-            usuarioRepo.save(admin);
-
-            System.out.println(">>> DATOS DE PRUEBA INSERTADOS CORRECTAMENTE");
+            System.out.println(">>> CHECKING/LOADING DATA COMPLETED");
         };
+    }
+
+    private Categoria createCategoriaIfNotFound(CategoriaRepository repo, String nombre, String url) {
+        // Simple check (assuming findAll is small enough for this sample or we'd add findByNombre)
+        return repo.findAll().stream().filter(c -> c.getNombre().equals(nombre)).findFirst()
+                .orElseGet(() -> repo.save(Categoria.builder().nombre(nombre).url(url).build()));
+    }
+
+    private Idioma createIdiomaIfNotFound(IdiomaRepository repo, String nombre) {
+        return repo.findAll().stream().filter(i -> i.getNombre().equals(nombre)).findFirst()
+                .orElseGet(() -> repo.save(Idioma.builder().nombre(nombre).build()));
+    }
+
+    private Director createDirectorIfNotFound(DirectorRepository repo, String nombre) {
+        return repo.findAll().stream().filter(d -> d.getNombre().equals(nombre)).findFirst()
+                .orElseGet(() -> repo.save(Director.builder().nombre(nombre).peliculas(new ArrayList<>()).build()));
+    }
+
+    private void createPeliculaIfNotFound(PeliculaRepository repo, String titulo, int duracion, LocalDate estreno,
+                                          String sinopsis, int valoracion, String directorFicha, String pais,
+                                          Director directorEntity, String urlImagen,
+                                          List<Categoria> categorias, List<Idioma> idiomas) {
+        
+        if (repo.findByTitulo(titulo).isEmpty()) {
+            FichaTecnica ficha = FichaTecnica.builder().director(directorFicha).duracion(duracion).pais(pais).build();
+            Pelicula p = Pelicula.builder()
+                    .titulo(titulo)
+                    .duracion(duracion)
+                    .fechaEstreno(estreno)
+                    .sinopsis(sinopsis)
+                    .valoracion(valoracion)
+                    .fichaTecnica(ficha)
+                    .director(directorEntity)
+                    .urlImagen(urlImagen)
+                    .categorias(new ArrayList<>(categorias))
+                    .idiomas(new ArrayList<>(idiomas))
+                    .build();
+            repo.save(p);
+            // Link director
+            directorEntity.getPeliculas().add(p);
+        } else {
+             // Update image always to ensure revisions are applied
+             repo.findByTitulo(titulo).ifPresent(p -> {
+                 p.setUrlImagen(urlImagen);
+                 repo.save(p);
+             });
+        }
     }
 }

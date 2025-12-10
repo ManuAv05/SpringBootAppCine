@@ -1,0 +1,56 @@
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: black;
+    z-index: 2000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeInPlayer 0.5s forwards;
+}
+
+.video-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.youtube-player {
+    width: 100%;
+    height: 100%;
+}
+
+.video-close-btn {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 10;
+    font-size: 1rem;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.video-close-btn:hover {
+    background: white;
+    color: black;
+    transform: scale(1.1);
+}
+
+@keyframes fadeInPlayer {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

@@ -3,7 +3,7 @@ package com.dam2.Practica1.service;
 import com.dam2.Practica1.domain.Critica;
 import com.dam2.Practica1.domain.Pelicula;
 import com.dam2.Practica1.domain.Usuario;
-import com.dam2.Practica1.dto.CriticaCreateUpdateDto;
+import com.dam2.Practica1.dto.CriticaCreateDto;
 import com.dam2.Practica1.dto.CriticaDto;
 import com.dam2.Practica1.repository.CriticaRepository;
 import com.dam2.Practica1.repository.PeliculaRepository;
@@ -21,74 +21,44 @@ import java.util.stream.Collectors;
 public class CriticaService {
 
     private final CriticaRepository criticaRepository;
-    private final UsuarioRepository usuarioRepository;
     private final PeliculaRepository peliculaRepository;
+    private final UsuarioRepository usuarioRepository;
 
     @Transactional(readOnly = true)
-    public List<CriticaDto> listar() {
-        return criticaRepository.findAll().stream()
-                .map(this::mapEntityToDto)
+    public List<CriticaDto> listarPorPelicula(Long peliculaId) {
+        return criticaRepository.findByPeliculaId(peliculaId).stream()
+                .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public CriticaDto crear(CriticaCreateUpdateDto dto) {
-        Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-
+    public CriticaDto crear(CriticaCreateDto dto) {
         Pelicula pelicula = peliculaRepository.findById(dto.getPeliculaId())
                 .orElseThrow(() -> new RuntimeException("Película no encontrada"));
+        
+        Usuario usuario = usuarioRepository.findById(dto.getUsuarioId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         Critica critica = Critica.builder()
                 .comentario(dto.getComentario())
                 .nota(dto.getNota())
-                .fecha(dto.getFecha() != null ? dto.getFecha() : LocalDate.now()) // Si no pone fecha, ponemos hoy
-                .usuario(usuario)
+                .fecha(LocalDate.now())
                 .pelicula(pelicula)
+                .usuario(usuario)
                 .build();
-
+        
         critica = criticaRepository.save(critica);
-        return mapEntityToDto(critica);
+        return mapToDto(critica);
     }
 
-    private CriticaDto mapEntityToDto(Critica c) {
+    private CriticaDto mapToDto(Critica c) {
         return CriticaDto.builder()
                 .id(c.getId())
                 .comentario(c.getComentario())
                 .nota(c.getNota())
                 .fecha(c.getFecha())
-                .username(c.getUsuario().getUsername())
-                .peliculaTitulo(c.getPelicula().getTitulo())
+                .usuario(c.getUsuario().getUsername())
+                .peliculaId(c.getPelicula().getId())
                 .build();
-    }
-    @Transactional
-    public CriticaDto actualizar(Long id, CriticaCreateUpdateDto dto) {
-        Critica critica = criticaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Crítica no encontrada"));
-
-        critica.setComentario(dto.getComentario());
-        critica.setNota(dto.getNota());
-        if (dto.getFecha() != null) {
-            critica.setFecha(dto.getFecha());
-        }
-
-        if (dto.getUsuarioId() != null) {
-            Usuario u = usuarioRepository.findById(dto.getUsuarioId()).orElseThrow();
-            critica.setUsuario(u);
-        }
-        if (dto.getPeliculaId() != null) {
-            Pelicula p = peliculaRepository.findById(dto.getPeliculaId()).orElseThrow();
-            critica.setPelicula(p);
-        }
-
-        critica = criticaRepository.save(critica);
-        return mapEntityToDto(critica);
-    }
-
-    public void eliminar(Long id) {
-        if (!criticaRepository.existsById(id)) {
-            throw new RuntimeException("Crítica no encontrada");
-        }
-        criticaRepository.deleteById(id);
     }
 }

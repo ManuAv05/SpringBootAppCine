@@ -1,0 +1,215 @@
+.profile-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #141414;
+    color: white;
+    text-align: center;
+    animation: fadeIn 0.8s cubic-bezier(0.2, 0.4, 0, 1);
+}
+
+.profile-title {
+    font-size: 3.5rem;
+    font-weight: 500;
+    margin-bottom: 3rem;
+    color: #fff;
+    letter-spacing: 1px;
+}
+
+.profile-list {
+    display: flex;
+    gap: 2.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 4rem;
+    max-width: 1200px;
+}
+
+.profile-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    width: 180px;
+    /* Larger hit area */
+    transition: transform 0.3s cubic-bezier(0.2, 0.4, 0, 1);
+}
+
+.profile-item:hover {
+    transform: scale(1.05);
+}
+
+.avatar-wrapper {
+    width: 160px;
+    /* Larger avatars */
+    height: 160px;
+    border-radius: 8px;
+    /* Slightly rounded corners */
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    position: relative;
+    border: 3px solid transparent;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.3s;
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #333;
+}
+
+.profile-item:hover .avatar-wrapper {
+    border-color: white;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.profile-name {
+    color: #808080;
+    font-size: 1.4rem;
+    font-weight: 400;
+    transition: color 0.2s;
+    letter-spacing: 0.5px;
+}
+
+.profile-item:hover .profile-name {
+    color: white;
+}
+
+/* Add Button Icon */
+.add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #808080;
+    font-size: 5rem;
+    background-color: #1a1a1a;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.profile-item:hover .add-btn {
+    background-color: white;
+    color: #808080;
+    /* Icon stays gray or becomes black? Netflix icon stays gray usually */
+    border-color: white;
+}
+
+/* Manage Mode */
+.manage-btn {
+    background: transparent;
+    border: 1px solid #808080;
+    color: #808080;
+    padding: 0.8rem 2.5rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    margin-top: 1rem;
+}
+
+.manage-btn:hover {
+    color: white;
+    border-color: white;
+}
+
+/* Form Styles */
+.add-profile-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    animation: fadeIn 0.4s ease;
+}
+
+.add-profile-form h2 {
+    font-size: 2.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 30px;
+}
+
+.profile-avatar.preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 4px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.add-profile-form input {
+    background: #666;
+    border: none;
+    padding: 12px 25px;
+    color: white;
+    font-size: 1.3rem;
+    outline: none;
+    width: 300px;
+    border-radius: 2px;
+}
+
+.add-profile-form input::placeholder {
+    color: #ccc;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.save-btn {
+    background-color: white;
+    color: black;
+    padding: 12px 35px;
+    border: none;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 0.2s;
+}
+
+.save-btn:hover {
+    background-color: #c00;
+    color: white;
+    transform: scale(1.05);
+}
+
+.cancel-btn {
+    background-color: transparent;
+    border: 1px solid #808080;
+    color: #808080;
+    padding: 12px 35px;
+    cursor: pointer;
+    font-size: 1rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+.cancel-btn:hover {
+    border-color: white;
+    color: white;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(1.1);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

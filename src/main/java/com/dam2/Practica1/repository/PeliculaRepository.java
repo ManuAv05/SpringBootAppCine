@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PeliculaRepository extends JpaRepository<Pelicula, Long> {
+    java.util.Optional<Pelicula> findByTitulo(String titulo);
 }

@@ -1,6 +1,6 @@
 package com.dam2.Practica1.web;
 
-import com.dam2.Practica1.dto.CriticaCreateUpdateDto;
+import com.dam2.Practica1.dto.CriticaCreateDto;
 import com.dam2.Practica1.dto.CriticaDto;
 import com.dam2.Practica1.service.CriticaService;
 import jakarta.validation.Valid;
@@ -14,25 +14,16 @@ import java.util.List;
 @RequestMapping("/api/criticas")
 @RequiredArgsConstructor
 public class CriticaController {
+
     private final CriticaService criticaService;
 
-    @GetMapping
-    public ResponseEntity<List<CriticaDto>> listar() {
-        return ResponseEntity.ok(criticaService.listar());
+    @GetMapping("/pelicula/{id}")
+    public ResponseEntity<List<CriticaDto>> listarPorPelicula(@PathVariable Long id) {
+        return ResponseEntity.ok(criticaService.listarPorPelicula(id));
     }
 
     @PostMapping
-    public ResponseEntity<CriticaDto> crear(@Valid @RequestBody CriticaCreateUpdateDto dto) {
+    public ResponseEntity<CriticaDto> crear(@Valid @RequestBody CriticaCreateDto dto) {
         return new ResponseEntity<>(criticaService.crear(dto), HttpStatus.CREATED);
-    }
-    @PutMapping("/{id}")
-    public ResponseEntity<CriticaDto> actualizar(@PathVariable Long id, @Valid @RequestBody CriticaCreateUpdateDto dto) {
-        return ResponseEntity.ok(criticaService.actualizar(id, dto));
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        criticaService.eliminar(id);
-        return ResponseEntity.noContent().build();
     }
 }

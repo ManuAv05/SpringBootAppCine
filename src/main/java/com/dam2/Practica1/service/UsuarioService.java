@@ -47,8 +47,19 @@ public class UsuarioService {
         return UsuarioDto.builder().id(u.getId()).username(u.getUsername()).email(u.getEmail()).rol(u.getRol()).build();
     }
 
+    @Transactional
     public void eliminar(Long id) {
-        if (!usuarioRepository.existsById(id)) throw new RuntimeException("Usuario no encontrado");
-        usuarioRepository.deleteById(id);
+        System.out.println("Intentando eliminar usuario ID: " + id);
+        Usuario u = usuarioRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        
+        // If user is a Jurado, clear their votes first to prevent FK issues
+        if (u.getJurado() != null) {
+            System.out.println("El usuario es jurado, borrando votos...");
+            u.getJurado().getPeliculasVotadas().clear();
+            // We don't need to explicitly delete Jurado because of CascadeType.ALL on Usuario
+        }
+        
+        usuarioRepository.delete(u);
+        System.out.println("Usuario eliminado.");
     }
 }
