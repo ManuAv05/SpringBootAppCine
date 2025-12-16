@@ -74,7 +74,7 @@ public class DataLoader {
             createPeliculaIfNotFound(peliculaRepo, "Get Out", 104, LocalDate.of(2017, 2, 24),
                     "Un joven afroamericano visita la propiedad de la familia blanca de su novia, donde descubre un oscuro secreto.", 8,
                     "Jordan Peele", "EE.UU.", peele,
-                    "https://play-lh.googleusercontent.com/_bsdjxiJW46t8sFC5H46LOOgBWye5EfVHEs2lOeM4pAy3grq-SXa1glySgv89-ryagOApg",
+                    "https://www.ecartelera.com/images/noticias/fotos/38000/38080/1.jpg",
                     List.of(terror, thriller), List.of(ingles));
 
             // As Above, So Below (Así en la Tierra como en el Infierno)
@@ -90,7 +90,7 @@ public class DataLoader {
             createPeliculaIfNotFound(peliculaRepo, "Expediente Warren: The Conjuring", 112, LocalDate.of(2013, 7, 19),
                     "Los investigadores paranormales Ed y Lorraine Warren ayudan a una familia aterrorizada por una presencia oscura en su granja.", 8,
                     "James Wan", "EE.UU.", wan,
-                    "https://pics.filmaffinity.com/the_conjuring_the_warren_files-153245956-large.jpg",
+                    "https://m.media-amazon.com/images/M/MV5BNDk0MjYzNzctZWRhNi00NmVjLTgxYTctNjE2OGYwOWI1NDgxXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg",
                     List.of(terror, thriller), List.of(ingles, espanol));
 
             // Hereditary
@@ -106,7 +106,7 @@ public class DataLoader {
             createPeliculaIfNotFound(peliculaRepo, "Sinister", 110, LocalDate.of(2012, 10, 12),
                     "Un escritor de crímenes reales encuentra una caja de películas caseras que sugieren que el asesinato que está investigando es obra de un asesino en serie sobrenatural.", 7,
                     "Scott Derrickson", "EE.UU.", derrickson,
-                    "https://pics.filmaffinity.com/Sinister-578046633-large.jpg",
+                    "https://m.media-amazon.com/images/I/81GVVDwM-aL._AC_UF894,1000_QL80_.jpg",
                     List.of(terror, thriller), List.of(ingles));
 
             // 4. Admin User

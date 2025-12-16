@@ -8,6 +8,7 @@ import Modal from './components/Modal/Modal';
 import VideoPlayer from './components/VideoPlayer/VideoPlayer';
 import ProfileSelection from './pages/ProfileSelection';
 import UserManagement from './pages/UserManagement';
+import MovieManagement from './pages/MovieManagement';
 import { AppProvider, useAppContext } from './context/AppContext';
 import './index.css';
 import './App.css';
@@ -84,6 +85,12 @@ function AppContent() {
                 <Route path="/admin/users" element={
                     <AdminRoute>
                         <UserManagement />
+                    </AdminRoute>
+                } />
+
+                <Route path="/admin/movies" element={
+                    <AdminRoute>
+                        <MovieManagement />
                     </AdminRoute>
                 } />
             </Routes>

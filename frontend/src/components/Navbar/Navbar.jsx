@@ -31,12 +31,20 @@ function Navbar({ navbarBlack, setBusqueda, setMostrarCatalogo }) {
 
                 {/* Only show Admin link if user has ADMIN role */}
                 {currentProfile && currentProfile.rol === 'ADMIN' && (
-                    <Link
-                        to="/admin/users"
-                        className={`nav-link ${location.pathname === '/admin/users' ? 'active' : ''}`}
-                    >
-                        Admin
-                    </Link>
+                    <>
+                        <Link
+                            to="/admin/users"
+                            className={`nav-link ${location.pathname === '/admin/users' ? 'active' : ''}`}
+                        >
+                            Usuarios
+                        </Link>
+                        <Link
+                            to="/admin/movies"
+                            className={`nav-link ${location.pathname === '/admin/movies' ? 'active' : ''}`}
+                        >
+                            Películas
+                        </Link>
+                    </>
                 )}
 
                 <Link
