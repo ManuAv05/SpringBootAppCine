@@ -39,7 +39,8 @@ public class PeliculaService {
     private final IdiomaRepository idiomaRepository;
     private final FichaTecnicaRepository fichaTecnicaRepository;
 
-    private final List<String> candidatos = List.of("Interstellar", "The Dark Knight", "Soul", "Oppenheimer", "El club de la Lucha");
+    private final List<String> candidatos = List.of("Interstellar", "The Dark Knight", "Soul", "Oppenheimer",
+            "El club de la Lucha");
     private final Map<String, Integer> resultadosVotacion = new ConcurrentHashMap<>();
     private final Random random = new Random();
     private static final Semaphore VOTO_SEMAPHORE = new Semaphore(5);
@@ -106,7 +107,7 @@ public class PeliculaService {
                 .collect(Collectors.toList());
     }
 
-    public List<PeliculaDto> mejores_peliculas(int valoracion){
+    public List<PeliculaDto> mejores_peliculas(int valoracion) {
         return peliculaRepository.findAll().stream()
                 .filter(p -> p.getValoracion() >= valoracion)
                 .map(this::mapEntityToDto)
@@ -172,11 +173,15 @@ public class PeliculaService {
 
         if (p.getDirector() != null) {
             dto.setNombreDirector(p.getDirector().getNombre());
+            dto.setDirectorId(p.getDirector().getId());
         }
 
         if (p.getActors() != null) {
             dto.setNombresActores(p.getActors().stream()
                     .map(Actor::getNombre)
+                    .collect(Collectors.toList()));
+            dto.setActorIds(p.getActors().stream()
+                    .map(Actor::getId)
                     .collect(Collectors.toList()));
         }
 
@@ -184,11 +189,17 @@ public class PeliculaService {
             dto.setNombresCategorias(p.getCategorias().stream()
                     .map(Categoria::getNombre)
                     .collect(Collectors.toList()));
+            dto.setCategoriaIds(p.getCategorias().stream()
+                    .map(Categoria::getId)
+                    .collect(Collectors.toList()));
         }
 
         if (p.getIdiomas() != null) {
             dto.setNombresIdiomas(p.getIdiomas().stream()
                     .map(Idioma::getNombre)
+                    .collect(Collectors.toList()));
+            dto.setIdiomaIds(p.getIdiomas().stream()
+                    .map(Idioma::getId)
                     .collect(Collectors.toList()));
         }
 
@@ -237,7 +248,7 @@ public class PeliculaService {
         List<CompletableFuture<Void>> futures = new ArrayList<>();
 
         var resource = getClass().getClassLoader().getResource("datos");
-        if(resource == null) {
+        if (resource == null) {
             System.err.println("La carpeta 'datos' no se encuentra en resources.");
             return;
         }
@@ -267,7 +278,8 @@ public class PeliculaService {
 
             List<Pelicula> lista = new ArrayList<>();
             List<String> lineas = Files.readAllLines(fichero);
-            if(!lineas.isEmpty()) lineas.remove(0);
+            if (!lineas.isEmpty())
+                lineas.remove(0);
 
             for (String linea : lineas) {
                 String[] campos = linea.split(";");

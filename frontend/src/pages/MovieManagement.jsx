@@ -117,10 +117,9 @@ function MovieManagement() {
         setEditingId(movie.id);
         setFormData({
             titulo: movie.titulo,
-            directorId: movie.directorId || (movie.director ? movie.director.id : ''),
-            // If movie.categorias is list of objects, map to IDs. 
-            // NOTE: DTO usually returns full objects, so we need to map them back to IDs for the form.
-            categoriaIds: movie.categorias ? movie.categorias.map(c => c.id) : [],
+            directorId: movie.directorId || '',
+            // Now using IDs directly from DTO
+            categoriaIds: movie.categoriaIds || [],
             sinopsis: movie.sinopsis,
             duracion: movie.duracion,
             fechaEstreno: movie.fechaEstreno || '',
@@ -174,7 +173,7 @@ function MovieManagement() {
                                 />
                             </td>
                             <td>{movie.titulo}</td>
-                            <td>{movie.director ? movie.director.nombre : "N/A"}</td>
+                            <td>{movie.nombreDirector || "N/A"}</td>
                             <td>{movie.valoracion}/10</td>
                             <td className="actions-cell">
                                 <button className="icon-btn edit" onClick={() => startEdit(movie)}>

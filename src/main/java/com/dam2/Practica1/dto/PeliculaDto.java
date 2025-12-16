@@ -15,7 +15,14 @@ public class PeliculaDto {
     private String urlImagen;
 
     private String nombreDirector;
+    private Long directorId;
+
     private List<String> nombresActores;
+    private List<Long> actorIds;
+
     private List<String> nombresCategorias;
+    private List<Long> categoriaIds;
+
     private List<String> nombresIdiomas;
+    private List<Long> idiomaIds;
 }

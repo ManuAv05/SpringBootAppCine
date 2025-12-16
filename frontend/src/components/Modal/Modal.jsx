@@ -107,12 +107,26 @@ function Modal({ movie, onClose, onPlay }) {
                     </div>
                     <div className="modal-col-right">
                         <div className="modal-details-item">
+                            <span className="label-gray">Director: </span>
+                            <span className="link-white">
+                                {movie.nombreDirector || "Desconocido"}
+                            </span>
+                        </div>
+                        <div className="modal-details-item">
                             <span className="label-gray">Reparto: </span>
-                            <span className="link-white">Actores desconocidos</span>
+                            <span className="link-white">
+                                {movie.nombresActores && movie.nombresActores.length > 0
+                                    ? movie.nombresActores.slice(0, 5).join(", ")
+                                    : "Actores desconocidos"}
+                            </span>
                         </div>
                         <div className="modal-details-item">
                             <span className="label-gray">Géneros: </span>
-                            <span className="link-white">Acción, Drama</span>
+                            <span className="link-white">
+                                {movie.nombresCategorias && movie.nombresCategorias.length > 0
+                                    ? movie.nombresCategorias.join(", ")
+                                    : "General"}
+                            </span>
                         </div>
                     </div>
                 </div>
